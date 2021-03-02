@@ -1,0 +1,31 @@
+USE securechat_db;
+
+-- get chat (module) list items
+-- asume we are user_1
+SELECT 
+	cr.id AS 'chat_room_id', 
+    cm.message AS 'recent_message', 
+    concat(ud.first_name, ' ', ud.last_name) AS 'name'
+FROM chat_rooms cr
+JOIN (
+	SELECT * from chat_messages 
+    WHERE (timestamp, chat_room_id) 
+    IN (SELECT 
+		MAX(timestamp), chat_room_id 
+        FROM chat_messages 
+        GROUP BY chat_room_id)
+) AS cm ON cr.id = cm.chat_room_id
+JOIN chat_room_members crm 
+	ON crm.chat_room_id = cr.id AND crm.phone_number != '+14375551234' -- phone number of user_1
+JOIN user_details ud ON crm.phone_number = ud.phone_number
+GROUP BY cm.chat_room_id;
+
+-- get chat room with messages
+SELECT cr.id AS 'chat_room_id', sender, receiver, message, timestamp
+FROM chat_rooms cr
+JOIN chat_messages cm ON cr.id = cm.chat_room_id
+ORDER BY timestamp;
+
+-- temporary quick check queries
+SELECT * FROM chat_messages ORDER BY timestamp DESC;
+SELECT * FROM chat_rooms;

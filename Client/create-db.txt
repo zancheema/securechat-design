@@ -1,0 +1,40 @@
+DROP DATABASE IF EXISTS securechat_db;
+CREATE DATABASE securechat_db;
+USE securechat_db;
+
+CREATE TABLE users(
+	phone_number VARCHAR(15) PRIMARY KEY
+);
+
+CREATE TABLE user_details(
+	phone_number VARCHAR(15) NOT NULL,
+    first_name VARCHAR(25) NOT NULL,
+    last_name VARCHAR(25) NOT NULL,
+    photo_url VARCHAR(100),
+    PRIMARY KEY (phone_number),
+    FOREIGN KEY (phone_number) REFERENCES users(phone_number)
+);
+
+CREATE TABLE chat_rooms(
+	id VARCHAR(20) PRIMARY KEY
+);
+
+CREATE TABLE chat_room_members(
+	id VARCHAR(20) PRIMARY KEY,
+    phone_number VARCHAR(15) NOT NULL,
+    chat_room_id VARCHAR(20) NOT NULL,
+    FOREIGN KEY (phone_number) REFERENCES users(phone_number),
+    FOREIGN KEY (chat_room_id) REFERENCES chat_rooms(id)
+);
+
+CREATE TABLE chat_messages(
+	id VARCHAR(20) PRIMARY KEY,
+    chat_room_id VARCHAR(20) NOT NULL,
+    sender VARCHAR(15) NOT NULL,
+    receiver VARCHAR(15) NOT NULL,
+    message VARCHAR(500) NOT NULL,
+    timestamp DATETIME NOT NULL DEFAULT now(),
+    FOREIGN KEY (chat_room_id) REFERENCES chat_rooms(id),
+    FOREIGN KEY (sender)  REFERENCES users(phone_number),
+    FOREIGN KEY (receiver) REFERENCES users(phone_number)
+)

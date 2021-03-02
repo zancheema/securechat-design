@@ -1,0 +1,59 @@
+-- reset provious data
+USE securechat_db;
+SET SQL_SAFE_UPDATES = 0;
+SET FOREIGN_KEY_CHECKS = 0;
+DELETE FROM users;
+DELETE FROM user_details;
+DELETE FROM chat_rooms;
+DELETE FROM chat_messages;
+
+-- populate new data
+INSERT INTO users VALUES 
+	('+14375551234'),
+    ('+914375451278'),
+    ('+914375451235');
+    
+INSERT INTO user_details VALUES 
+	('+14375551234', 'John', 'Doe', 'http://example.com'),
+	('+914375451278', 'Jane', 'Doe', 'http://example.com'),
+	('+914375451235', 'Michael', 'Bay', 'http://example.com');
+    
+INSERT INTO chat_rooms VALUES 
+	('123456789123456789e2'), -- chat room 1
+	('123456789123456789e3'), -- chat room 2
+	('123456789123456789e4'); -- chat room 3
+    
+INSERT INTO chat_room_members VALUES
+	('oeriudnfldj39', '+14375551234', '123456789123456789e2'), -- user_1 in chat_room_1
+	('fowiej3290395', '+14375551234', '123456789123456789e3'), -- user_1 in chat_room_2
+	('slfj90wldfjei', '+914375451278', '123456789123456789e2'), -- user_2 in chat_room_1
+	('sldfj9303klsf', '+914375451235', '123456789123456789e3'); -- user_3 in chat_room_2
+    
+INSERT INTO chat_messages VALUES 
+(
+	'a3e4567zi12345z789e2',
+    '123456789123456789e2', -- chat room 1
+    '+14375551234',
+    '+914375451278',
+    'Hey',
+    now()
+),
+(
+	'a3e4567zi12345z789e3',
+    '123456789123456789e2', -- chat room 1
+    '+914375451278', -- phone numbers are reversed (reply to previous message)
+    '+14375551234',
+    'Hi',
+    now() + 2
+), 
+(
+	'a3e4567zi12345z789e4',
+    '123456789123456789e3', -- chat room 2
+    '+14375551234',
+    '+914375451235',
+    'Hello',
+    now()
+);
+
+SET SQL_SAFE_UPDATES = 1;
+SET FOREIGN_KEY_CHECKS = 1;

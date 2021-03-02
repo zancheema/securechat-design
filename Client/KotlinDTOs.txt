@@ -1,0 +1,23 @@
+data class User(
+    val phoneNumber: String
+)
+
+data class UserDetail(
+    val firstName: String,
+    val lastName: String,
+    val photoUrl: String
+)
+
+data class ChatRoom(
+    val id: String,
+    val members: Array<String>,
+    val chatMessages: Array<ChatMessage>
+)
+
+data class ChatMessage(
+    val id: String,
+    val from: String,
+    val to: String,
+    val message: String,
+    val timeStamp: Long
+)
